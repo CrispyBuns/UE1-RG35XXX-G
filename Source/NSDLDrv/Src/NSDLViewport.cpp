@@ -804,7 +804,7 @@ UBOOL UNSDLViewport::TickInput()
 					if( bSelectDown && bStartDown )
 					{
 						debugf( NAME_Exit, "Select + Start pressed; requesting clean exit" );
-						appRequestExit();
+						GIsRequestingExit = 1;
 						break;
 					}
 
