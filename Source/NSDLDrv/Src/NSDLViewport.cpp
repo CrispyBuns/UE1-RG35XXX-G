@@ -792,6 +792,22 @@ UBOOL UNSDLViewport::TickInput()
 			case SDL_CONTROLLERBUTTONDOWN:
 			case SDL_CONTROLLERBUTTONUP:
 				{
+					// RG35XX-H: Select (Back) + Start requests a clean engine shutdown.
+					static UBOOL bSelectDown = 0;
+					static UBOOL bStartDown = 0;
+					const UBOOL bButtonDown = ( Ev.type == SDL_CONTROLLERBUTTONDOWN );
+					if( Ev.cbutton.button == SDL_CONTROLLER_BUTTON_BACK )
+						bSelectDown = bButtonDown;
+					else if( Ev.cbutton.button == SDL_CONTROLLER_BUTTON_START )
+						bStartDown = bButtonDown;
+
+					if( bSelectDown && bStartDown )
+					{
+						debugf( NAME_Exit, "Select + Start pressed; requesting clean exit" );
+						appRequestExit();
+						break;
+					}
+
 					// HACK: Swap to alternate bindings when in menus, but not when waiting for keypress in the keybind menu.
 					const UBOOL bIsInUI = Console &&
 						((UObject*)Console)->GetMainFrame() &&
