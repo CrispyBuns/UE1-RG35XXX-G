@@ -10,6 +10,8 @@
 	Globals.
 -----------------------------------------------------------------------------*/
 
+#include <stdint.h>
+
 // Enums for specifying memory allocation type.
 enum EMemZeroed {MEM_Zeroed=1};
 enum EMemOned   {MEM_Oned  =1};
@@ -36,7 +38,7 @@ public:
 		debug(Top<=End);
 
 		// Try to get memory from the current chunk.
-		BYTE* Result = (BYTE *)(((INT)Top+(Align-1))&~(Align-1));
+		BYTE* Result = reinterpret_cast<BYTE*>((reinterpret_cast<uintptr_t>(Top)+(uintptr_t)(Align-1))&~((uintptr_t)Align-1));
 		Top = Result + AllocSize;
 
 		// Make sure we didn't overflow.
@@ -44,7 +46,7 @@ public:
 		{
 			// We'd pass the end of the current chunk, so allocate a new one.
 			AllocateNewChunk( AllocSize + Align );
-			Result = (BYTE *)(((int)Top+(Align-1))&~(Align-1));
+			Result = reinterpret_cast<BYTE*>((reinterpret_cast<uintptr_t>(Top)+(uintptr_t)(Align-1))&~((uintptr_t)Align-1));
 			Top    = Result + AllocSize;
 		}
 		return Result;
