@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #ifdef PLATFORM_WIN32
 #include <direct.h>
@@ -294,7 +295,7 @@ CORE_API void* appRealloc( void* Ptr, INT NewSize, const char* Tag )
 	return realloc( Ptr, NewSize );
 #endif
 
-	unguardf(( "%08X %i %s", (INT)Ptr, NewSize, Tag ));
+	unguardf(( "%p %i %s", Ptr, NewSize, Tag ));
 }
 
 /*-----------------------------------------------------------------------------
