@@ -10,6 +10,8 @@
 	Standard templates.
 -----------------------------------------------------------------------------*/
 
+#include <stdint.h>
+
 template< class T > inline T Abs( const T A )
 {
 	return (A>=(T)0) ? A : -A;
@@ -37,6 +39,11 @@ template< class T > inline T Clamp( const T X, const T Min, const T Max )
 template< class T > inline T Align( const T Ptr, INT Alignment )
 {
 	return (T)(((DWORD)Ptr + Alignment - 1) & ~(Alignment-1));
+}
+template< class T > inline T* Align( T* Ptr, INT Alignment )
+{
+	const uintptr_t Address = reinterpret_cast<uintptr_t>(Ptr);
+	return reinterpret_cast<T*>((Address + (uintptr_t)Alignment - 1) & ~((uintptr_t)Alignment - 1));
 }
 template< class T > inline void Exchange( T& A, T& B )
 {
